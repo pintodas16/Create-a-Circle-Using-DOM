@@ -1,7 +1,13 @@
 const body = document.querySelector("body");
-const element = document.createElement("div");
-element.style.background = "red";
-body.appendChild(element);
+const redo = document.querySelector(".redo");
+const Clear = document.querySelector(".undo");
+let counter = 0;
+const counterIncrease = () => {
+  return (counter += 1);
+};
+const counterDecrease = () => {
+  return (counter -= 1);
+};
 
 function preload() {}
 
@@ -14,11 +20,24 @@ function draw(x, y, counter) {
   strokeWeight(counter);
   point(x, y);
 }
-let counter = 0;
+
 const clickHandle = (event) => {
-  counter += 1;
+  let value = counterIncrease();
+  console.log(value);
   let positionX = event.pageX;
   let positionY = event.pageY;
-  draw(positionX, positionY, counter);
+  draw(positionX, positionY, value);
 };
 body.addEventListener("click", clickHandle);
+console.log(counter);
+const handleRedo = () => {
+  let value = counterDecrease();
+  console.log(value);
+  body.removeEventListener("click", clickHandle);
+};
+redo.addEventListener("click", handleRedo);
+const handleClear = () => {
+  window.location.reload();
+  body.removeEventListener("click", clickHandle);
+};
+Clear.addEventListener("click", handleClear);
